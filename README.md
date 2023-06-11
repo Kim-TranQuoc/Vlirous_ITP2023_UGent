@@ -1,6 +1,6 @@
 # Vlirous_ITP2023_UGent
 This is a part of works of Vlir-ous International Training Progamme (ITP) 2023 at Ghent university with project title of "Machine learning for climate change mitigation in buildings". This work includes the following files:
-- Data_Analysis.py: Analyzing the simulation data with statistical features, histogram & density plots, data visualization with parallel coordinates plots, and variable correlation coeficients;
+- Data_Analysis.py: Analyzing the simulation data with statistical features, histogram & density plots, data visualization with parallel coordinates plots, and variable correlation coefficients;
 - Model_1.py: A simple ANN model with 2 phases (train and test);
 - Model_2.py: A simple ANN model with 3 phases (train, validation and test) and early stopping codition (based on val_loss);
 - Model_3.py: A simple ANN model with 3 phases (train, validation and test) and custom early stopping codition (based on val_loss and loss_relation);
