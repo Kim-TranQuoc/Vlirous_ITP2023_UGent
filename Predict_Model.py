@@ -51,7 +51,7 @@ def main():
     total_time_start = timeit.default_timer()
 
     # Make result directory
-    saved_model = ['Model_3', '230609_211743']
+    saved_model = ['Model_3', '230610_005228']
     script_dir = os.path.dirname(__file__)
     current_file = os.path.splitext(os.path.basename(__file__))[0]
     dt_string = datetime.now().strftime("%y%m%d_%H%M%S")
@@ -66,44 +66,48 @@ def main():
     model = keras.models.load_model(model_path)
 
     # New data
-    new_cases_path = os.path.join(script_dir, 'Results', 'Predict', 'New_cases')
-    new_cases_files = [file for file in os.listdir(new_cases_path) if file.endswith(".csv")]
-    for file_no, file_name in enumerate(new_cases_files):
-        # New cases
-        data_df = pd.read_csv(os.path.join(new_cases_path, file_name), header=None)
-        new_data = data_df.to_numpy()
-        case_name = file_name.replace('.csv', '')
+    # new_cases_path = os.path.join(script_dir, 'Results', 'Predict', 'New_cases')
+    # new_cases_files = [file for file in os.listdir(new_cases_path) if file.endswith(".csv")]
+    # for file_no, file_name in enumerate(new_cases_files):
+    #     # New cases
+    #     data_df = pd.read_csv(os.path.join(new_cases_path, file_name), header=None)
+    #     new_data = data_df.to_numpy()
+    #     case_name = file_name.replace('.csv', '')
+    #
+    #     print('----- Data summary -----')
+    #     print(f'> Data cases: {case_name} case')
+    #     print(f'> Number of new data: {new_data.shape[0]} samples')
+    #
+    #     # Scale data
+    #     data_range = np.array([[0, 5], [100, 500], [50, 350], [0.5, 1.5], [1, 3], [0.4, 1.6], [18, 28]])
+    #     scaled_range = (0, 1)
+    #     new_data = scale_data(new_data, data_range, scaled_range)
+    #
+    #     # Predict new data
+    #     predict_train_y = model.predict(new_data)
+    #     new_data = inverse_scale_data(new_data, data_range, scaled_range)
+    #     new_df = pd.DataFrame(np.hstack((new_data, predict_train_y)))
+    #     new_df.to_csv(os.path.join(result_dir, 'Predict_' + case_name + '.csv'), header=None, index=False)
 
-        print('----- Data summary -----')
-        print(f'> Data cases: {case_name} case')
-        print(f'> Number of new data: {new_data.shape[0]} samples')
+    data_range = np.array([[0, 5], [100, 500], [50, 350], [0.5, 1.5], [1, 3], [0.4, 1.6], [18, 28]])
+    num_vars = np.array([6, 6, 7, 6, 3, 7, 6])
+    base_vars = np.array([[1.3, 1.8, 3.4], [200, 300, 400], [100, 200, 300], [0.665, 0.9, 1.2], [1, 2, 3], [0.6, 1.0, 1.4], [20, 22, 25]])
+    feature_names = ['OTC', 'EWT', 'IWT', 'WBC', 'NGL', 'RTR', 'IAT']
+    input_vars = {}
+    for i in range(len(feature_names)):
+        input_vars[feature_names[i]] = np.unique(np.append(base_vars[i, :], np.linspace(data_range[i, 0], data_range[i, 1], num_vars[i])).round(decimals=5))
+    values = np.array(list(input_vars.values()), dtype=object)
+    new_data = np.array(np.meshgrid(*values, indexing='ij')).T.reshape(-1, len(values))
+    # Scale data
+    scaled_range = (0, 1)
+    new_data = scale_data(new_data, data_range, scaled_range)
 
-        # Scale data
-        data_range = np.array([[0, 5], [100, 500], [50, 350], [0.5, 1.5], [1, 3], [0.4, 1.6], [18, 28]])
-        scaled_range = (0, 1)
-        new_data = scale_data(new_data, data_range, scaled_range)
+    print(f'> Number of new data: {new_data.shape[0]} samples')
 
-        # Predict new data
-        predict_train_y = model.predict(new_data)
-        new_data = inverse_scale_data(new_data, data_range, scaled_range)
-        new_df = pd.DataFrame(np.hstack((new_data, predict_train_y)))
-        new_df.to_csv(os.path.join(result_dir, 'Predict_' + case_name + '.csv'), header=None, index=False)
-
-    # input_vars = {'OTC': np.unique(np.append([1.3, 1.8, 3.4], [0 + i*0.5*2 for i in range(6)])),  # [0, 5]
-    #               'EWT': np.unique(np.append([200, 300], [100 + i*40*2 for i in range(6)])),  # [0, 5]
-    #               'IWT': np.unique(np.append([100, 200], [100 + i*20*2 for i in range(6)])),  # [0, 5]
-    #               'WBC': np.unique(np.append([0.665, 0.9, 1.2], [0.5 + i*0.1*2 for i in range(6)])),  # [0, 5]
-    #               'NGL': np.unique(np.append([1, 2, 3], [1 + i*1 for i in range(5)])),  # [1, 2, 3, 4, 5]
-    #               'RTR': np.unique(np.append([0.6, 1.0, 1.4], [0.5 + i*0.2*2 for i in range(6)])),  # [0, 5]
-    #               'IAT': np.unique(np.append([20, 22, 25], [18 + i*1*2 for i in range(6)]))  # [0, 5]
-    #               }
-    # values = np.array(list(input_vars.values()), dtype=object)
-    # new_data = np.array(np.meshgrid(*values, indexing='ij')).T.reshape(-1, len(values))
-    # print(f'> Number of new data: {new_data.shape[0]} samples')
-
-    # predict_train_y = model.predict(new_data)
-    # new_df = pd.DataFrame(np.hstack((new_data, predict_train_y)))
-    # new_df.to_csv(os.path.join(result_dir, 'Predict_New_Data' + '.csv'), header=None, index=False)
+    predict_train_y = model.predict(new_data)
+    new_data = inverse_scale_data(new_data, data_range, scaled_range)
+    new_df = pd.DataFrame(np.hstack((new_data, predict_train_y)))
+    new_df.to_csv(os.path.join(result_dir, 'Predict_New_Data' + '.csv'), header=None, index=False)
 
     # Total time
     total_time_stop = timeit.default_timer()
