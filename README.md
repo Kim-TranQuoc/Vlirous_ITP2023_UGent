@@ -5,7 +5,8 @@ This is a part of works of Vlir-ous International Training Progamme (ITP) 2023 a
 - Model_2.py: A simple ANN model with 3 phases (train, validation and test) and early stopping codition (based on val_loss);
 - Model_3.py: A simple ANN model with 3 phases (train, validation and test) and custom early stopping codition (based on val_loss and loss_relation);
 - Predict_Model.py: Generating predictions via a saved model;
-- Model_Agnostic_Analysis.py: Analyzing the trained model with partial dependence plots and feature importance.
+- Model_Agnostic_Analysis.py: Analyzing the trained model with partial dependence plots and feature importance,
+- Metaheuristic_Optimization.py: Optimizing the problem with ANN surrogate model and metaheursitic algorithm DE.
 
 # Contributor
 - Kim Q. Tran
