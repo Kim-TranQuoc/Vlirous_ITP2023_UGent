@@ -29,7 +29,7 @@ def get_data():
     data_df = pd.read_csv('./data/Data_Infor.csv', header=None)
     data_infor = data_df.to_numpy()
 
-    data_folder_path = './data/Rand120Mod'
+    data_folder_path = './data/BaseVar'
     data_files = [file for file in os.listdir(data_folder_path) if file.endswith(".csv")]
 
     data_X = np.zeros([len(data_files), 7])

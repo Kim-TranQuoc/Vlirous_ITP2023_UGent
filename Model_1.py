@@ -250,12 +250,12 @@ def main():
     best_epoch = results['Best_epoch']
     print('----- Training Accessment -----')
     print(f'> Best epoch: {best_epoch}')
-    print(f'> Train: - Loss MSE: {train_scores[0]:.3e}')
-    print(f'         - Metric RMSE: {train_scores[1]:.3e}')
-    print(f'         - Metric MAE: {train_scores[2]:.3e}')
-    print(f'> Test: - Loss MSE: {test_scores[0]:.3e}')
-    print(f'        - Metric RMSE: {test_scores[1]:.3e}')
-    print(f'        - Metric MAE: {test_scores[2]:.3e}')
+    print(f'> Train: - Loss MSE: {train_scores[0]:.3f}')
+    print(f'         - Metric RMSE: {train_scores[1]:.3f}')
+    print(f'         - Metric MAE: {train_scores[2]:.3f}')
+    print(f'> Test: - Loss MSE: {test_scores[0]:.3f}')
+    print(f'        - Metric RMSE: {test_scores[1]:.3f}')
+    print(f'        - Metric MAE: {test_scores[2]:.3f}')
 
     # Statistics scores
     r2_scores = np.array([r2_score(train_y, predict_train_y), r2_score(test_y, predict_test_y)])
@@ -263,10 +263,10 @@ def main():
     k = np.array([train_X.shape[1], test_X.shape[1]])
     adj_r2_scores = (1 - (1 - r2_scores) * (n - 1) / (n - k - 1))
     print('----- Statistics Scores -----')
-    print(f'> Train: - R2 score: {r2_scores[0]:.3e}')
-    print(f'         - Adj R2 score: {adj_r2_scores[0]:.3e}')
-    print(f'> Test: - R2 score: {r2_scores[1]:.3e}')
-    print(f'        - Adj R2 score: {adj_r2_scores[1]:.3e}')
+    print(f'> Train: - R2 score: {r2_scores[0]:.3f}')
+    print(f'         - Adj R2 score: {adj_r2_scores[0]:.3f}')
+    print(f'> Test: - R2 score: {r2_scores[1]:.3f}')
+    print(f'        - Adj R2 score: {adj_r2_scores[1]:.3f}')
 
     predict_train_y = model.predict(train_X)
     predict_test_y = model.predict(test_X)

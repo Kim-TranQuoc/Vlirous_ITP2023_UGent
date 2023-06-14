@@ -104,9 +104,9 @@ def main():
 
     print(f'> Number of new data: {new_data.shape[0]} samples')
 
-    predict_train_y = model.predict(new_data)
+    predict_new_data = model.predict(new_data)
     new_data = inverse_scale_data(new_data, data_range, scaled_range)
-    new_df = pd.DataFrame(np.hstack((new_data, predict_train_y)))
+    new_df = pd.DataFrame(np.hstack((new_data, predict_new_data)))
     new_df.to_csv(os.path.join(result_dir, 'Predict_New_Data' + '.csv'), header=None, index=False)
 
     # Total time
